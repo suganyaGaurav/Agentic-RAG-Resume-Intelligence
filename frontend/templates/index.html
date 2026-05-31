@@ -1,0 +1,822 @@
+<!-- ==========================================
+     index.html
+     Governance-Aware Resume Match System
+========================================== -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <!-- =====================================
+         Meta Tags
+    ====================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+
+    <!-- =====================================
+         Page Title
+    ====================================== -->
+
+    <title>
+
+        Governance-Aware Resume Match System
+
+    </title>
+
+
+
+    <!-- =====================================
+         CSS File
+    ====================================== -->
+
+    <link
+
+        rel="stylesheet"
+
+        href="{{ url_for('static', filename='style.css') }}"
+
+    >
+
+</head>
+
+<body>
+
+
+
+    <!-- =====================================
+         Flash Popup Messages
+    ====================================== -->
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            <script>
+
+                let full_message = "{{ messages[0] }}";
+
+                let message_type = full_message.split("::")[0];
+
+                let message_text = full_message.split("::")[1];
+
+
+
+                alert(message_text);
+
+
+
+                if (message_type === "error") {
+
+                    window.location.href = "/";
+
+                }
+
+            </script>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+
+    <!-- =====================================
+         Main Container
+    ====================================== -->
+
+    <div class="main-container">
+
+
+
+        <!-- =================================
+             Header Section
+        ================================== -->
+
+        <h1>
+
+            Governance-Aware Resume Match System
+
+        </h1>
+
+
+
+        <p class="subtitle">
+
+            LangGraph + Structured Semantic RAG Workflow
+
+        </p>
+
+
+
+
+
+        <!-- =================================
+             Upload Form
+        ================================== -->
+
+        <form
+
+            method="POST"
+
+            enctype="multipart/form-data"
+
+        >
+
+
+
+            <!-- =============================
+                 Resume Upload
+            ============================== -->
+
+            <div class="upload-section">
+
+                <label>
+
+                    Upload Resume (PDF Only)
+
+                </label>
+
+
+
+                <input
+
+                    type="file"
+
+                    name="resume_file"
+
+                    accept=".pdf"
+
+                    required
+
+                >
+
+            </div>
+
+
+
+
+
+            <!-- =============================
+                 JD Upload
+            ============================== -->
+
+            <div class="upload-section">
+
+                <label>
+
+                    Upload Job Description (PDF Only)
+
+                </label>
+
+
+
+                <input
+
+                    type="file"
+
+                    name="jd_file"
+
+                    accept=".pdf"
+
+                    required
+
+                >
+
+            </div>
+
+
+
+
+
+            <!-- =============================
+                 Submit Button
+            ============================== -->
+
+            <button type="submit">
+
+                Start Workflow Analysis
+
+            </button>
+
+        </form>
+
+
+
+
+
+        <!-- =================================
+             Output Section
+        ================================== -->
+
+        <div class="output-section">
+
+
+
+            <h3>
+
+                Workflow Output
+
+            </h3>
+
+
+
+            {% if success_message %}
+
+
+
+                <!-- =========================
+                     Reset Upload Form
+                ========================== -->
+
+                <script>
+
+                    document.addEventListener(
+
+                        "DOMContentLoaded",
+
+                        function () {
+
+                            document.querySelector(
+                                "form"
+                            ).reset();
+
+                        }
+
+                    );
+
+                </script>
+
+
+
+
+
+                <!-- =========================
+                     Success Message
+                ========================== -->
+
+                <p class="success-message">
+
+                    ✔ {{ success_message }}
+
+                </p>
+
+
+
+
+
+                <!-- =========================
+                     Workflow Pipeline
+                ========================== -->
+
+                <h4>
+
+                    Workflow Execution Status
+
+                </h4>
+
+
+
+                <div class="workflow-pipeline">
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Governance
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Storage
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Parser
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Extraction
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Chunking
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Embedding
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Vector Store
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Retrieval
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Analysis
+                        </div>
+                    </div>
+
+                    <div class="pipeline-line"></div>
+
+
+
+                    <div class="pipeline-step">
+                        <div class="pipeline-circle"></div>
+                        <div class="pipeline-label">
+                            Evaluation
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+                <!-- =========================
+                     Analysis Results
+                ========================== -->
+
+                <h4>
+
+                    AI Match Analysis
+
+                </h4>
+
+
+
+                <div class="analysis-card">
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Overall Match Score
+
+                        </span>
+
+
+
+                        <span class="analysis-value">
+
+                            {{ analysis_results.overall_score }}%
+
+                        </span>
+
+                    </div>
+
+
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Support Level
+
+                        </span>
+
+
+
+                        <span class="analysis-value">
+
+                            {{ analysis_results.support_level }}
+
+                        </span>
+
+                    </div>
+
+
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            AI Recommendation
+
+                        </span>
+
+
+
+                        <p class="analysis-text">
+
+                            {{ analysis_results.recommendation }}
+
+                        </p>
+
+                    </div>
+
+
+
+
+
+                    <!-- =====================
+                         Strong Matches
+                    ====================== -->
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Strong Matches
+
+                        </span>
+
+
+
+                        <ul>
+
+                            {% if analysis_results.strong_matches %}
+
+                                {% for item in analysis_results.strong_matches %}
+
+                                    <li>
+
+                                        {{ item.query }}
+
+                                    </li>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <li>
+
+                                    No strong matches identified
+
+                                </li>
+
+                            {% endif %}
+
+                        </ul>
+
+                    </div>
+
+
+
+
+
+                    <!-- =====================
+                         Partial Matches
+                    ====================== -->
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Partial Matches
+
+                        </span>
+
+
+
+                        <ul>
+
+                            {% if analysis_results.partial_matches %}
+
+                                {% for item in analysis_results.partial_matches %}
+
+                                    <li>
+
+                                        {{ item.query }}
+
+                                    </li>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <li>
+
+                                    No partial matches identified
+
+                                </li>
+
+                            {% endif %}
+
+                        </ul>
+
+                    </div>
+
+
+
+
+
+                    <!-- =====================
+                         Missing Skills
+                    ====================== -->
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Missing / Weak Areas
+
+                        </span>
+
+
+
+                        <ul>
+
+                            {% if analysis_results.missing_skills %}
+
+                                {% for item in analysis_results.missing_skills %}
+
+                                    <li>
+
+                                        {{ item.query }}
+
+                                    </li>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <li>
+
+                                    No major weak areas detected
+
+                                </li>
+
+                            {% endif %}
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+
+
+
+                <!-- =========================
+                     Evaluation Results
+                ========================== -->
+
+                <h4>
+
+                    Retrieval Evaluation Metrics
+
+                </h4>
+
+
+
+                <div class="analysis-card">
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Evaluation Status
+
+                        </span>
+
+
+
+                        <span class="analysis-value">
+
+                            {{ evaluation_results.evaluation_status }}
+
+                        </span>
+
+                    </div>
+
+
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Retrieval Precision
+
+                        </span>
+
+
+
+                        <span class="analysis-value">
+
+                            {{ evaluation_results.retrieval_precision }}%
+
+                        </span>
+
+                    </div>
+
+
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Strong Match Count
+
+                        </span>
+
+
+
+                        <span class="analysis-value">
+
+                            {{ evaluation_results.strong_match_count }}
+
+                        </span>
+
+                    </div>
+
+
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Partial Match Count
+
+                        </span>
+
+
+
+                        <span class="analysis-value">
+
+                            {{ evaluation_results.partial_match_count }}
+
+                        </span>
+
+                    </div>
+
+
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Missing Skill Count
+
+                        </span>
+
+
+
+                        <span class="analysis-value">
+
+                            {{ evaluation_results.missing_skill_count }}
+
+                        </span>
+
+                    </div>
+
+
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Score Consistency
+
+                        </span>
+
+
+
+                        <span class="analysis-value">
+
+                            {{ evaluation_results.score_consistency }}
+
+                        </span>
+
+                    </div>
+
+
+
+
+
+                    <div class="analysis-block">
+
+                        <span class="analysis-title">
+
+                            Evaluation Summary
+
+                        </span>
+
+
+
+                        <p class="analysis-text">
+
+                            {{ evaluation_results.evaluation_summary }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+            {% else %}
+
+
+
+                <!-- =========================
+                     Default State
+                ========================== -->
+
+                <div class="default-message">
+
+                    Upload Resume and Job
+                    Description PDFs to begin
+                    governance-aware workflow
+                    analysis.
+
+                </div>
+
+
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
