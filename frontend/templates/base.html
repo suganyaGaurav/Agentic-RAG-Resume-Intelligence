@@ -1,0 +1,116 @@
+<!-- =========================================================
+     File Name: base.html
+
+     Purpose:
+     Master dashboard layout used by:
+
+     - index.html
+     - evaluation.html
+
+========================================================= -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+
+    {% block title %}
+        AI Resume Intelligence Platform
+    {% endblock %}
+
+</title>
+
+<!-- Global Styles -->
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static',
+                     filename='style.css') }}"
+>
+
+{% block page_css %}
+{% endblock %}
+```
+
+</head>
+
+<body>
+
+```
+<!-- =====================================
+     Dashboard Layout
+====================================== -->
+
+<div class="dashboard-container">
+
+    <!-- =================================
+         Sidebar
+    ================================== -->
+
+    <aside class="sidebar">
+
+        {% include "components/sidebar.html" %}
+
+    </aside>
+
+
+    <!-- =================================
+         Main Dashboard Area
+    ================================== -->
+
+    <div class="main-wrapper">
+
+        <!-- =============================
+             Top Navigation
+        ============================== -->
+
+        <header class="topbar">
+
+            {% include "components/topbar.html" %}
+
+        </header>
+
+
+        <!-- =============================
+             Dynamic Page Content
+        ============================== -->
+
+        <main class="content-area">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+     Global JavaScript
+====================================== -->
+
+<script
+    src="{{ url_for('static',
+                    filename='js/dashboard.js') }}"
+></script>
+
+{% block page_js %}
+{% endblock %}
+```
+
+</body>
+
+</html>

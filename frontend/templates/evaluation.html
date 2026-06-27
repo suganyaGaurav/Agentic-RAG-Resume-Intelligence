@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Evaluation Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+
+    <h2>
+        AI Evaluation Dashboard
+    </h2>
+
+    <p>
+        DeepEval • RAGAS • LangSmith Evaluation Intelligence
+    </p>
+
+</div>
+
+
+<!-- ==========================================
+     Evaluation Metrics
+========================================== -->
+
+<h2 class="section-title">
+
+    Evaluation Metrics
+
+</h2>
+
+<div class="metrics-grid">
+
+    <div class="metric-card">
+
+        <div class="metric-value">
+
+            {{ evaluation_results.retrieval_precision }}%
+
+        </div>
+
+        <div class="metric-label">
+
+            Retrieval Precision
+
+        </div>
+
+    </div>
+
+
+    <div class="metric-card">
+
+        <div class="metric-value">
+
+            {{ evaluation_results.strong_match_count }}
+
+        </div>
+
+        <div class="metric-label">
+
+            Strong Matches
+
+        </div>
+
+    </div>
+
+
+    <div class="metric-card">
+
+        <div class="metric-value">
+
+            {{ evaluation_results.partial_match_count }}
+
+        </div>
+
+        <div class="metric-label">
+
+            Partial Matches
+
+        </div>
+
+    </div>
+
+
+    <div class="metric-card">
+
+        <div class="metric-value">
+
+            {{ evaluation_results.missing_skill_count }}
+
+        </div>
+
+        <div class="metric-label">
+
+            Missing Skills
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================
+     AI Evaluation Engines
+========================================== -->
+
+<h2 class="section-title">
+
+    Evaluation Engines
+
+</h2>
+
+<div class="workflow-grid">
+
+    <div class="workflow-step">
+
+        <div class="workflow-icon">🧠</div>
+
+        <div class="workflow-title">
+
+            DeepEval
+
+        </div>
+
+        <p>
+
+            LLM Response Evaluation
+
+        </p>
+
+    </div>
+
+
+    <div class="workflow-step">
+
+        <div class="workflow-icon">📊</div>
+
+        <div class="workflow-title">
+
+            RAGAS
+
+        </div>
+
+        <p>
+
+            Retrieval Quality Assessment
+
+        </p>
+
+    </div>
+
+
+    <div class="workflow-step">
+
+        <div class="workflow-icon">🔍</div>
+
+        <div class="workflow-title">
+
+            LangSmith
+
+        </div>
+
+        <p>
+
+            Workflow Observability
+
+        </p>
+
+    </div>
+
+
+    <div class="workflow-step">
+
+        <div class="workflow-icon">🛡️</div>
+
+        <div class="workflow-title">
+
+            Governance
+
+        </div>
+
+        <p>
+
+            Responsible AI Validation
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<br>
+
+
+<!-- ==========================================
+     Evaluation Summary
+========================================== -->
+
+<div class="dashboard-card">
+
+    <h2>
+
+        Evaluation Summary
+
+    </h2>
+
+    <br>
+
+    <p>
+
+        {{ evaluation_results.evaluation_summary }}
+
+    </p>
+
+</div>
+
+
+<!-- ==========================================
+     Consistency Check
+========================================== -->
+
+<div class="dashboard-card">
+
+    <h2>
+
+        Score Consistency
+
+    </h2>
+
+    <br>
+
+    <h1 style="color:#2563eb;">
+
+        {{ evaluation_results.score_consistency }}
+
+    </h1>
+
+</div>
+
+
+<!-- ==========================================
+     Governance Validation
+========================================== -->
+
+<div class="workflow-section">
+
+    <h2>
+
+        Governance Validation
+
+    </h2>
+
+    <br>
+
+    <div class="workflow-grid">
+
+        <div class="workflow-step">
+
+            <div class="workflow-icon">✅</div>
+
+            <div class="workflow-title">
+
+                Privacy Protected
+
+            </div>
+
+        </div>
+
+
+        <div class="workflow-step">
+
+            <div class="workflow-icon">✅</div>
+
+            <div class="workflow-title">
+
+                Explainable Scoring
+
+            </div>
+
+        </div>
+
+
+        <div class="workflow-step">
+
+            <div class="workflow-icon">✅</div>
+
+            <div class="workflow-title">
+
+                AI Transparency
+
+            </div>
+
+        </div>
+
+
+        <div class="workflow-step">
+
+            <div class="workflow-icon">✅</div>
+
+            <div class="workflow-title">
+
+                Data Minimization
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
