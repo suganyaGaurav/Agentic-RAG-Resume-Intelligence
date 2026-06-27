@@ -1,0 +1,554 @@
+{% extends "base.html" %}
+
+{% block title %}
+Resume Intelligence Dashboard
+{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================
+     Flash Messages
+========================================== -->
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<script>
+
+let full_message = "{{ messages[0] }}";
+let message_text = full_message.split("::")[1];
+alert(message_text);
+
+</script>
+{% endif %}
+{% endwith %}
+
+<!-- ==========================================
+     Upload Section
+========================================== -->
+
+<div class="dashboard-card upload-section-card">
+
+    <h3>
+        Upload Documents
+    </h3>
+
+    <form
+        method="POST"
+        action="/"
+        enctype="multipart/form-data"
+    >
+
+              <div class="upload-grid">
+        
+            <div class="upload-box">
+        
+                <div class="upload-title">
+                    Resume
+                </div>
+        
+                <input
+                    type="file"
+                    id="resume_file"
+                    name="resume_file"
+                    accept=".pdf"
+                    required
+                    onchange="validatePDF(this,'Resume')"
+                >
+        
+            </div>
+        
+            <div class="upload-box">
+        
+                <div class="upload-title">
+                    Job Description
+                </div>
+        
+                <input
+                    type="file"
+                    id="jd_file"
+                    name="jd_file"
+                    accept=".pdf"
+                    required
+                    onchange="validatePDF(this,'Job Description')"
+                >
+        
+            </div>
+        
+        </div>
+
+        <button
+            class="analyze-btn"
+            type="submit"
+        >
+
+            🔍 Analyze Match
+
+        </button>
+
+    </form>
+
+</div>
+
+<!-- ==========================================
+     Governance Banner
+========================================== -->
+
+<div class="governance-banner">
+
+    🔒 Files are automatically deleted after
+    analysis for privacy and governance compliance.
+
+</div>
+
+{% if success_message %}
+
+<!-- ==========================================
+     SECTION 1
+     Application Readiness + Career Guidance
+========================================== -->
+
+<div class="dashboard-grid-2">
+
+    <!-- Score -->
+
+    <div class="dashboard-card score-card">
+
+        <h3>
+            Application Readiness Score
+        </h3>
+
+        <div class="progress-wrapper">
+
+            <div
+                class="progress-circle"
+                style="--progress: {{ analysis_results.get('overall_score',0) }};"
+            >
+
+                <div class="progress-inner">
+
+                    <span class="progress-score">
+
+                        {{ analysis_results.get('overall_score',0) }}%
+
+                    </span>
+
+                    <span class="progress-label">
+
+                        Match Score
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="score-status">
+
+            {{ analysis_results.get('support_level', '') }}
+
+        </div>
+
+    </div>
+
+    <!-- Guidance -->
+
+    <div class="dashboard-card">
+    
+        <h3>
+            Career Guidance
+        </h3>
+    
+        <p>
+    
+            {{ career_guidance.get(
+                'career_guidance',
+                ''
+            ) }}
+    
+        </p>
+    
+    </div>
+    
+
+</div>
+
+<!-- ==========================================
+     Career Intelligence Summary
+========================================== -->
+
+<div class="dashboard-card">
+
+    <h3>
+        Career Intelligence Summary
+    </h3>
+
+    <p>
+
+        {{ career_guidance.get(
+            'candidate_summary',
+            ''
+        ) }}
+
+    </p>
+
+</div>
+
+
+<!-- ==========================================
+     SECTION 2
+     Match Intelligence
+========================================== -->
+
+<div class="dashboard-grid-3">
+
+    <!-- Strengths -->
+
+    <div class="dashboard-card">
+
+        <h3>
+            Your Strengths
+        </h3>
+
+        <ul>
+
+        {% for item in career_guidance.get(
+            'strengths',
+            []
+        ) %}
+        <li>
+        
+            {{ item }}
+        
+        </li>
+        
+        {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <div class="dashboard-card">
+
+        <h3>
+            Learning Roadmap
+        </h3>
+    
+        <ul>
+    
+            {% for item in career_guidance.get(
+                'learning_path',
+                []
+            ) %}
+    
+            <li>
+    
+                Priority {{ item.priority }}
+    
+                →
+    
+                {{ item.skill }}
+    
+            </li>
+    
+            {% endfor %}
+    
+        </ul>
+    
+    </div>
+
+    <div class="dashboard-card">
+
+        <h3>
+            Resume Suggestions
+        </h3>
+    
+        <ul>
+    
+            {% for suggestion in career_guidance.get(
+                'resume_suggestions',
+                []
+            ) %}
+    
+            <li>
+    
+                {{ suggestion }}
+    
+            </li>
+    
+            {% endfor %}
+    
+        </ul>
+    
+    </div>
+
+    <!-- Improvements -->
+
+    <div class="dashboard-card">
+
+        <h3>
+            Areas To Improve
+        </h3>
+
+        <ul>
+
+            {% for item in analysis_results.get('partial_matches', []) %}
+
+                <li>
+
+                    {{ item.category }}
+
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <!-- Missing -->
+
+    <div class="dashboard-card">
+
+        <h3>
+            Skills To Learn
+        </h3>
+
+        <ul>
+
+           {% for skill in career_guidance.get(
+                'critical_missing_skills',
+                []
+            ) %}
+            
+            <li>
+            
+                {{ skill }}
+            
+            </li>
+            
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================
+     Skill Intelligence
+========================================== -->
+
+<div class="dashboard-card">
+
+    <h3>
+        Skill Intelligence
+    </h3>
+
+    <div class="metrics-grid">
+
+        <div class="metric-box">
+
+            <span>
+
+                {{ career_guidance.get(
+                    'resume_skill_count',
+                    0
+                ) }}
+
+            </span>
+
+            <p>
+                Resume Skills
+            </p>
+
+        </div>
+
+        <div class="metric-box">
+
+            <span>
+
+                {{ career_guidance.get(
+                    'jd_skill_count',
+                    0
+                ) }}
+
+            </span>
+
+            <p>
+                JD Skills
+            </p>
+
+        </div>
+
+        <div class="metric-box">
+
+            <span>
+
+                {{ career_guidance.get(
+                    'total_missing_skill_count',
+                    0
+                ) }}
+
+            </span>
+
+            <p>
+                Missing Skills
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+     SECTION 3
+     Evaluation Metrics
+========================================== -->
+
+<div class="dashboard-card">
+
+    <h3>
+        Evaluation Metrics
+    </h3>
+
+    <div class="metrics-grid">
+
+        <div class="metric-box">
+
+            <span>
+
+                {{ evaluation_results.get(
+                    'retrieval_precision',
+                    ''
+                ) }}%
+
+            </span>
+
+            <p>
+                Retrieval Precision
+            </p>
+
+        </div>
+
+        <div class="metric-box">
+
+            <span>
+
+                {{ evaluation_results.get(
+                    'strong_match_count',
+                    ''
+                ) }}
+
+            </span>
+
+            <p>
+                Strong Matches
+            </p>
+
+        </div>
+
+        <div class="metric-box">
+
+            <span>
+
+                {{ evaluation_results.get(
+                    'missing_skill_count',
+                    ''
+                ) }}
+
+            </span>
+
+            <p>
+                Missing Skills
+            </p>
+
+        </div>
+
+        <div class="metric-box">
+
+            <span>
+
+                {{ evaluation_results.get(
+                    'score_consistency',
+                    ''
+                ) }}
+
+            </span>
+
+            <p>
+                Consistency
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+     SECTION 4
+     Workflow Validation
+========================================== -->
+
+<div class="dashboard-card">
+
+    <h3>
+        Workflow Validation
+    </h3>
+
+    <div class="workflow-pipeline">
+
+        <span>Governance</span>
+        <span>Storage</span>
+        <span>Parser</span>
+        <span>Extraction</span>
+        <span>Chunking</span>
+        <span>Embedding</span>
+        <span>Retrieval</span>
+        <span>Analysis</span>
+        <span>Career Guidance</span>
+        <span>Evaluation</span>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+<script>
+
+function validatePDF(inputElement, fileType) {
+
+    const file = inputElement.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const extension = file.name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+    if (extension !== "pdf") {
+
+        alert(
+            fileType +
+            " must be uploaded as a PDF file."
+        );
+
+        inputElement.value = "";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}
+</script>
+{% endblock %}
